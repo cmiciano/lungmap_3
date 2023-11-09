@@ -10,12 +10,15 @@ read_objects <- function(ipath1, ipath2=NULL){
     for(o in objs){
         temp_obj <- readRDS(paste0(ipath1,o))
         obj_list <- append(obj_list, temp_obj)
+        # since adding metadata for lung removed barcodes from rownames, readd so createchromassay works for cells param
+        rownames(temp_obj@meta.data) <- temp_obj$BARCODE
     }
 
     if (is.null(ipath2) == FALSE){
         objs2 <- list.files(ipath2)
         for(o in objs2){
         temp_obj2 <- readRDS(paste0(ipath2,o))
+
         obj_list <- append(obj_list, temp_obj2)
         }
     }
